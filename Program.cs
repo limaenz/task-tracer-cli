@@ -1,2 +1,19 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿
+using TaskTrackerCli.Core.Interfaces;
+using TaskTrackerCli.src.Features.AddTask;
+using TaskTrackerCli.src.Features.HelpTask;
+
+internal class Program
+{
+  private static void Main()
+  {
+    var commands = new List<ICommand>()
+    {
+      new AddTaskCommand(),
+      new HelpTaskCommand()
+    };
+
+    var commandParser = new CommandParser(commands);
+    commandParser.Start();
+  }
+}
