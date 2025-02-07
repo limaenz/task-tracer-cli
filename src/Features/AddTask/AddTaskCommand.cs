@@ -21,27 +21,24 @@ namespace TaskTrackerCli.src.Features.AddTask
 
                 if (!isTaskName)
                     continue;
-                
+
                 taskName += parameters[^1].Equals(item)
                 ? item
                 : item + " ";
             }
 
-            if (string.IsNullOrWhiteSpace(taskName)
-            && taskName.LastOrDefault() != '"'
-            && taskName.FirstOrDefault() == '"')
-                return;
-
-            var id = Guid.NewGuid();
             var newTask = new TaskModel()
             {
-                Id = id,
-                Description = taskName.Trim('"'),
+                Id = Guid.NewGuid(),
+                Description = taskName,
                 Status = Enums.TaskStatus.Todo,
                 CreatedAt = DateTime.Now,
                 UpdateAt = DateTime.Now
             };
 
+            if (newTask.IsInvalid())
+                return;
+                
             var currentTasks = new List<TaskModel>()
             {
                 newTask
@@ -66,7 +63,7 @@ namespace TaskTrackerCli.src.Features.AddTask
             }
 
             File.WriteAllText(path, json);
-            Console.WriteLine($"Task added successfully (ID: {id})");
+            Console.WriteLine($"Task added successfully (ID: {newTask.Id})");
         }
     }
 }
