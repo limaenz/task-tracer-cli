@@ -5,9 +5,9 @@ using TaskTrackerCli.Models;
 
 namespace TaskTrackerCli.src.Features.AddTask
 {
-    public class AddTaskCommand : ICommand
+    public class UpdateTaskCommand : ICommand
     {
-        public string Name => "add";
+        public string Name => "update";
 
         public void Execute(string[] parameters)
         {
@@ -27,43 +27,56 @@ namespace TaskTrackerCli.src.Features.AddTask
                 : item + " ";
             }
 
-            var newTask = new TaskModel()
-            {
-                Id = Guid.NewGuid(),
-                Description = taskName,
-                Status = Enums.TaskStatus.Todo,
-                CreatedAt = DateTime.Now,
-                UpdateAt = DateTime.Now
-            };
-
-            if (newTask.IsInvalidDescription())
+            if (parameters.Length < 4)
                 return;
-                
-            var currentTasks = new List<TaskModel>()
-            {
-                newTask
-            };
 
             string path = "/mnt/c/Projects/TaskTrackerCli/src/Database/task_data.json";
             var options = new JsonSerializerOptions { WriteIndented = true };
 
             string json = string.Empty;
             bool fileExists = File.Exists(path);
+            Guid id;
 
             if (!fileExists)
-                json = JsonSerializer.Serialize(currentTasks, options);
+            {
+                Console.WriteLine($"Task not found. You need to add the task before proceeding.");
+                return;
+            }
             else
             {
-                currentTasks = JsonSerializer
+                var currentTasks = JsonSerializer
                     .Deserialize<List<TaskModel>>(File.ReadAllText(path)) ?? [];
-                currentTasks.Add(newTask);
+
+                if (!Guid.TryParse(parameters[2], out id))
+                    return;
+
+                var index = currentTasks.FindIndex(x => x.Id == id);
+
+                if (index == -1)
+                    return;
+
+                var currentTask = currentTasks[index];
+
+                if (currentTask.Id == Guid.Empty)
+                {
+                    Console.WriteLine($"Task not found.");
+                    return;
+                }
+
+                currentTask.Description = taskName;
+                currentTask.UpdateAt = DateTime.Now;
+
+                if (currentTask.IsInvalidDescription())
+                    return;
+
+                currentTasks[index] = currentTask;    
 
                 json = JsonSerializer.Serialize(currentTasks, options);
                 File.Delete(path);
             }
 
             File.WriteAllText(path, json);
-            Console.WriteLine($"Task added successfully (ID: {newTask.Id})");
+            Console.WriteLine($"Task updated successfully (ID:{id})");
         }
     }
 }

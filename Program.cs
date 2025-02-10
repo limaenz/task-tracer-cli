@@ -10,7 +10,8 @@ internal class Program
     var commands = new List<ICommand>()
     {
       new AddTaskCommand(),
-      new HelpTaskCommand()
+      new HelpTaskCommand(),
+      new UpdateTaskCommand()
     };
 
     var commandParser = new CommandParser(commands);
