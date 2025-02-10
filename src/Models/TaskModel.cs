@@ -10,7 +10,7 @@ namespace TaskTrackerCli.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdateAt { get; set; }
 
-        public bool IsInvalid()
+        public bool IsInvalidDescription()
         {
             if (string.IsNullOrWhiteSpace(Description.Trim('"'))
             || Description.LastOrDefault() != '"'
