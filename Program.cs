@@ -11,7 +11,8 @@ internal class Program
     {
       new AddTaskCommand(),
       new HelpTaskCommand(),
-      new UpdateTaskCommand()
+      new UpdateTaskCommand(),
+      new DeleteTaskCommand()
     };
 
     var commandParser = new CommandParser(commands);
