@@ -12,7 +12,9 @@ internal class Program
       new AddTaskCommand(),
       new HelpTaskCommand(),
       new UpdateTaskCommand(),
-      new DeleteTaskCommand()
+      new DeleteTaskCommand(),
+      new MarkDoneTaskCommand(),
+      new MarkInProgressTaskCommand()
     };
 
     var commandParser = new CommandParser(commands);
