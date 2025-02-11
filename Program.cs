@@ -14,7 +14,8 @@ internal class Program
       new UpdateTaskCommand(),
       new DeleteTaskCommand(),
       new MarkDoneTaskCommand(),
-      new MarkInProgressTaskCommand()
+      new MarkInProgressTaskCommand(),
+      new ListTaskCommand()
     };
 
     var commandParser = new CommandParser(commands);
