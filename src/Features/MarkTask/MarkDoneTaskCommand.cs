@@ -5,9 +5,9 @@ using TaskTrackerCli.Models;
 
 namespace TaskTrackerCli.src.Features.AddTask
 {
-    public class DeleteTaskCommand : ICommand
+    public class MarkDoneTaskCommand : ICommand
     {
-        public string Name => "delete";
+        public string Name => "mark-done";
 
         public void Execute(string[] parameters)
         {
@@ -27,7 +27,10 @@ namespace TaskTrackerCli.src.Features.AddTask
             bool fileExists = File.Exists(path);
 
             if (!fileExists)
+            {
                 Console.WriteLine($"Task not found. You need to add the task before proceeding.");
+                return;
+            }
             else
             {
                 var currentTasks = JsonSerializer
@@ -40,14 +43,24 @@ namespace TaskTrackerCli.src.Features.AddTask
                     return;
                 }
 
-                currentTasks.RemoveAt(index);
+                var currentTask = currentTasks[index];
+
+                if (currentTask.Id == Guid.Empty)
+                {
+                    Console.WriteLine($"Task not found. You need to add the task before proceeding.");
+                    return;
+                }
+
+                currentTask.Status = Enums.TaskStatus.Done;
+
+                currentTasks[index] = currentTask;
 
                 json = JsonSerializer.Serialize(currentTasks, options);
                 File.Delete(path);
             }
 
             File.WriteAllText(path, json);
-            Console.WriteLine($"Task removed successfully (ID: {id})");
+            Console.WriteLine($"Task updated successfully (ID:{id})");
         }
     }
 }
