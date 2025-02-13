@@ -2,9 +2,6 @@
 
 Task Tracker CLI is a command-line application designed to **track and manage tasks** efficiently. With this tool, you can **add, update, delete, and list tasks**, as well as mark them as **in-progress** or **done**.
 
-📌 **Project URL:**  
-🔗 [Task Tracker on Roadmap.sh](https://roadmap.sh/projects/task-tracker)  
-
 ## 🚀 Features
 
 - ✅ **Add Task** – Create a new task with a short description.
@@ -41,7 +38,10 @@ This project is built using:
    ```bash
    dotnet build
    ```
-
+3. **Run the project:**
+   ```bash
+   dotnet run
+   ```
 ---
 
 ## 🚀 Usage
