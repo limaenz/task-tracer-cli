@@ -1,9 +1,3 @@
-using System.Text.Json;
-
-using TaskTrackerCli.Models;
-
-using TaskStatus = TaskTrackerCli.Enums.TaskStatus;
-
 namespace TaskTrackerCli.Core.Interfaces;
 
 public class CommandParser(List<ICommand> commands)
@@ -27,11 +21,11 @@ public class CommandParser(List<ICommand> commands)
             var parameters = input.Split(' ');
 
             bool isTaskCli = parameters[0] == "task-cli " || parameters[0] == "task-cli";
-            if (!isTaskCli)
+            if (!isTaskCli && parameters.Length <= 1)
+            {
+                Console.WriteLine("Comando não reconhecido. Para obter ajuda digite: task-cli help");
                 continue;
-
-            if (parameters.Length <= 1)
-                continue;
+            }
 
             var command = _commands.FirstOrDefault(x => x.Name == parameters[1]);
             if (command is null)
